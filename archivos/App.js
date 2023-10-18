@@ -3,10 +3,12 @@
 //npx expo install expo-file-system
 //npx expo install expo-sharing
 //npx expo install expo-media-library
-//npm install react-native-fs
+//npm i expo-permissions
 
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
+import * as Permissions from 'expo-permissions';
+
 //import RNFS from 'react-native-fs';
 
 
@@ -20,6 +22,10 @@ export default function App() {
   const [myTitle, setMyTitle] = useState('')
   const [searchFile, setSearchFile] = useState('')
 
+  // const perm = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+  //   if (perm.status != 'granted') {
+  //     return;
+  //   }
 
   const WriteFile = () => {
     // useEffect( () => {
