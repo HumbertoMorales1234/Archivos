@@ -3,14 +3,10 @@
 //npx expo install expo-file-system
 //npx expo install expo-sharing
 //npx expo install expo-media-library
-//npm i expo-permissions
 
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import * as Permissions from 'expo-permissions';
-
-//import RNFS from 'react-native-fs';
-
+import * as MediaLibrary from 'expo-media-library';
 
 
 import { StatusBar } from 'expo-status-bar';
@@ -18,57 +14,46 @@ import { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function App() {
+  const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
   const [myText, setMyText] = useState('')
   const [myTitle, setMyTitle] = useState('')
   const [searchFile, setSearchFile] = useState('')
 
-  // const perm = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
-  //   if (perm.status != 'granted') {
-  //     return;
-  //   }
+  useEffect(() => {
+    (async () => {
+      let { status } = await requestPermission(); //Parametro writeOnly
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+    })();
+  }, []);
 
-  const WriteFile = () => {
-    // useEffect( () => {
 
-    //   const saveFile = async () =>{
-    //   if(myText === '') return(console.log('No hay texto'))
-    //   if(myTitle === '') return(console.log('No hay Titulo'))
 
-    //   const path = RNFS.DocumentDirectoryPath + '/'+myTitle+'.txt';
-    //   try {
-    //     await RNFS.writeFile(path, myText, 'utf8');
-    //     console.log('File written successfully!');
-    //   } catch (error) {
-    //     console.error('Error writing file:', error);
-    //   }
+  const WriteFile = async () => {
 
-    //    fileUri = FileSystem.documentDirectory+myTitle+'.txt'
-
-    //    await FileSystem.writeAsStringAsync(fileUri, myText, {encoding: FileSystem.EncodingType.UTF8})
-    //    const asset = await MediaLibrary.createAssetAsync(fileUri)
-    //    await MediaLibrary.createAlbumAsync("Download", asset, false)
-    //   } 
-    // }, [])
-    // saveFile()
+    // const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+    try {
+      if (permissionResponse) {
+        let fileUri = FileSystem.documentDirectory+myTitle+".txt";
+        console.log('Before fileSystem:', fileUri)
+        await FileSystem.writeAsStringAsync(fileUri, 'demo text', { encoding: FileSystem.EncodingType.UTF8 });
+        console.log('After fileSystem:', fileUri)
+        const asset = await MediaLibrary.createAssetAsync(fileUri)
+        console.log('asset', asset)
+        await MediaLibrary.createAlbumAsync("Download", asset, false)
+        console.log(asset)
+     }
+    } catch (error) {
+      console.log(error) 
+    }  
   }
 
   
 
   const readFile = async (title) => {
 
-    // const path = RNFS.DocumentDirectoryPath + '/'+title+'.txt';
-
-    // try {
-    //   const content = await RNFS.readFile(path, 'utf8');
-    //   setFileContent(content);
-    //   console.log('File content:', content);
-    // } catch (error) {
-    //   console.error('Error reading file:', error);
-    // }
-
-    // const result = await FileSystem.readAsStringAsync(FileSystem.documentDirectory+title+'.txt', {encoding: FileSystem.EncodingType.UTF8})
-    // console.log(result)
-    //readAsStringAsync(FileSystem.documentDirectory+title, options)
   }
 
   const downloadImg = async () => {
