@@ -19,8 +19,6 @@ export default function TextFiles() {
     try {
         let fileUri = FileSystem.documentDirectory + myTitle + ".txt";
         await FileSystem.writeAsStringAsync(fileUri, myText, { encoding: FileSystem.EncodingType.UTF8 });
-        const info = await FileSystem.getInfoAsync(fileUri)
-        const doc = await FileSystem.readAsStringAsync(fileUri, { encoding: FileSystem.EncodingType.UTF8 }) 
     } catch (error) {
       console.log(error) 
     }  

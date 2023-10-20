@@ -112,9 +112,9 @@ export const ImageFiles = () => {
             <Text style={{maxWidth: 300}}>{JSON.stringify(imageData)}</Text>
         </View>
         <View>
-            <Text>Ancho: {imageData.width}</Text>
+            {/* <Text>Ancho: {imageData.width}</Text>
             <Text>Alto: {imageData.height}</Text>
-            <Text>ID: {imageData.assetId}</Text>
+            <Text>ID: {imageData.assetId}</Text>  */}
         </View>
     </View>
   )
